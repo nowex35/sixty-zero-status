@@ -1,31 +1,134 @@
-# Change these first
-owner: upptime # Your GitHub organization or username, where this repository lives
-repo: upptime # The name of this repository
+# SIXTYZERO ステータス(Upptime の設定)
+# 書き方: https://upptime.js.org/docs/configuration
+owner: nowex35
+repo: sixty-zero-status
+user-agent: nowex35
 
+# 使う secret は無い(GH_PAT はワークフローが別に渡すので、ここには書かない)
+secrets: []
+
+# 測るのは sixty-zero.app の公開パスだけ。Cloud Run の直接の URL・内部の URL は書かない。
+# slug は履歴ファイル名・Issue のラベル・メンテナンスの expectedDown に使うので固定する。
 sites:
-  - name: Google
-    url: https://www.google.com
-  - name: Wikipedia
-    url: https://en.wikipedia.org
-  - name: Hacker News
-    url: https://news.ycombinator.com
-  - name: Secret Site
-    url: $SECRET_SITE
+  - name: サイト(sixty-zero.app)
+    slug: site
+    url: https://sixty-zero.app/.well-known/security.txt
+    expectedStatusCodes:
+      - 200
+    # Worker だけで返す本文。これが無ければ 200 でも「停止」にする
+    __dangerous__body_down_if_text_missing: "Contact:"
+
+  # 「アプリ・API」は /api/health が本番に出てから有効にする(今は 404 で、入れると「停止」と出続ける)。
+  # 有効にするときは下のコメントを外す。外す前に、本番の応答の本文が
+  # {"status":"ok","backend":"ok"}(空白なし)であることを curl で確かめる。
+  # 失敗時は 503 なので、expectedStatusCodes だけでも「停止」になる。
+  #
+  # - name: アプリ・API
+  #   slug: api
+  #   url: https://sixty-zero.app/api/health
+  #   expectedStatusCodes:
+  #     - 200
+  #   __dangerous__body_down_if_text_missing: '"backend":"ok"'
+
+assignees:
+  - nowex35
+
+# 定期実行の下限が 5 分(GitHub Actions)。ほかは既定値のまま
+workflowSchedule:
+  uptime: "*/5 * * * *"
+
+# リポジトリの説明を英語で上書きさせない
+skipDescriptionUpdate: true
 
 status-website:
-  # Add your custom domain name, or remove the `cname` line if you don't have a domain
-  # Uncomment the `baseUrl` line if you don't have a custom domain and add your repo name there
-  cname: demo.upptime.js.org
-  # baseUrl: /your-repo-name
-  logoUrl: https://raw.githubusercontent.com/upptime/upptime.js.org/master/static/img/icon.svg
-  name: Upptime
-  introTitle: "**Upptime** is the open-source uptime monitor and status page, powered entirely by GitHub."
-  introMessage: This is a sample status page which uses **real-time** data from our [GitHub repository](https://github.com/upptime/upptime). No server required — just GitHub Actions, Issues, and Pages. [**Get your own for free**](https://github.com/upptime/upptime)
+  cname: status.sixty-zero.app
+  name: SIXTYZERO ステータス
+  introMessage: SIXTYZERO(sixty-zero.app)の稼働状況です。5 分ごとに外から確認しています。障害やメンテナンスのお知らせもここに載せます。
   navbar:
-    - title: Status
+    - title: ステータス
       href: /
     - title: GitHub
       href: https://github.com/$OWNER/$REPO
 
-# Upptime also supports notifications, assigning issues, and more
-# See https://upptime.js.org/docs/configuration
+# 文言(ステータスページと README)。$ で始まる語は差し込み先なので消さない
+i18n:
+  # ステータスページ(upptime/status-page の i18n.yml の全キー)
+  activeIncidents: 発生中の障害
+  allSystemsOperational: すべて正常に動いています
+  incidentReport: "障害 #$NUMBER の詳細 →"
+  activeIncidentSummary: $DATE に発生・投稿 $POSTS 件
+  incidentTitle: 障害 $NUMBER の詳細
+  incidentDetails: 障害の詳細
+  incidentFixed: 解決済み
+  incidentOngoing: 対応中
+  incidentOpenedAt: 発生
+  incidentClosedAt: 解決
+  incidentViewOnGitHub: GitHub で見る・通知を受け取る
+  incidentCommentSummary: $DATE に $AUTHOR が投稿
+  incidentBack: ← 障害の一覧へ戻る
+  pastIncidents: 過去の障害
+  pastIncidentsResolved: $MINUTES 分で解決・投稿 $POSTS 件
+  liveStatus: 現在の状況
+  overallUptime: "稼働率: $UPTIME"
+  overallUptimeTitle: 稼働率
+  averageResponseTime: "平均応答時間: $TIMEms"
+  averageResponseTimeTitle: 平均応答時間
+  sevelDayResponseTime: 直近 7 日の応答時間
+  responseTimeMs: 応答時間(ms)
+  up: 稼働中
+  down: 停止
+  degraded: 低下
+  ms: ms
+  loading: 読み込み中
+  navGitHub: GitHub
+  footer: このページは[オープンソース]($REPO)で、[Upptime](https://upptime.js.org) で動いています
+  rateLimitExceededTitle: アクセスの上限に達しました
+  rateLimitExceededIntro: 1 時間あたりのアクセスの上限に達したため、しばらく待ってから開き直してください。GitHub の個人用アクセストークンを入れると、続けて見られます。
+  rateLimitExceededWhatDoesErrorMean: このエラーについて
+  rateLimitExceededErrorMeaning: このページは GitHub の API から稼働状況を読み込んでいます。GitHub は IP アドレスごとに 1 時間 60 回までしか読み込めず、その回数を使い切りました。
+  rateLimitExceededErrorHowCanFix: 直し方
+  rateLimitExceededErrorFix: 1 時間待つと上限が戻ります。GitHub の個人用アクセストークンを入れると、1 時間あたり 5,000 回まで読み込めます。
+  rateLimitExceededGeneratePAT: 個人用アクセストークンの作り方
+  rateLimitExceededHasSet: 個人用アクセストークンが入っています。
+  rateLimitExceededRemoveToken: トークンを消す
+  rateLimitExceededGitHubPAT: GitHub の個人用アクセストークン
+  rateLimitExceededCopyPastePAT: トークンを貼り付けてください
+  rateLimitExceededSaveToken: トークンを保存する
+  errorTitle: エラーが起きました
+  errorIntro: 最新の稼働状況を読み込めませんでした。
+  errorText: 少し待ってから開き直してください。
+  errorHome: トップへ戻る
+  pastScheduledMaintenance: 過去のメンテナンス
+  scheduledMaintenance: メンテナンスの予定
+  scheduledMaintenanceSummaryStarted: $DATE から $DURATION 分間(実施中)
+  scheduledMaintenanceSummaryStarts: $DATE から $DURATION 分間の予定
+  startedAt: 開始
+  startsAt: 開始予定
+  duration: 時間
+  durationMin: $DURATION 分
+  incidentCompleted: 完了
+  incidentScheduled: 予定
+  duration24H: 24 時間
+  duration7D: 7 日
+  duration30D: 30 日
+  duration1Y: 1 年
+  durationAll: すべて
+  locale: ja-JP
+  # README だけで使う文言(uptime-monitor の summary.ts)
+  url: URL
+  status: 状態
+  history: 履歴
+  responseTime: 応答時間
+  responseTimeDay: 24 時間の応答時間
+  responseTimeWeek: 7 日の応答時間
+  responseTimeMonth: 30 日の応答時間
+  responseTimeYear: 1 年の応答時間
+  responseTimeGraphAlt: 応答時間のグラフ
+  uptime: 稼働率
+  uptimeDay: 24 時間の稼働率
+  uptimeWeek: 7 日の稼働率
+  uptimeMonth: 30 日の稼働率
+  uptimeYear: 1 年の稼働率
+  degradedPerformance: 🟨 一部で応答が遅れています
+  partialOutage: 🟧 一部が停止しています
+  completeOutage: 🟥 すべて停止しています
