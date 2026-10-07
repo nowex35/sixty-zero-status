@@ -49,6 +49,8 @@ Upptime のワークフローは、リポジトリの secret **`GH_PAT`**(個人
    - `expectedDown`:この間に止まると分かっている監視の名前(slug)を , 区切りで。今あるのは `site` と `api`。遅くなるだけなら `expectedDegraded`。
 3. ラベル `maintenance` を付け、鍵をかける。
 4. `end` を過ぎると Upptime が自動で閉じる。`expectedDown` に書いた監視は、この間に止まっても障害の Issue が作られない。
+5. GCP 側の警告(外形監視の CRITICAL・5xx)は、この Issue では止まらない。同じ時間帯で sixty-zero-server の
+   `scripts/maintenance-snooze.sh` を回して止める(手順は sixty-zero-server の `infra/terraform/README.md`「計画メンテナンス」)。
 
 ## 監視している項目
 
