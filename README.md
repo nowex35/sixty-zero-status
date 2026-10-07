@@ -7,6 +7,18 @@ SIXTYZERO(sixty-zero.app)の稼働状況と、障害・メンテナンスのお�
 <!--start: status pages-->
 <!--end: status pages-->
 
+## 動かすための設定(運営、最初の 1 回と期限切れのとき)
+
+Upptime のワークフローは、リポジトリの secret **`GH_PAT`**(個人のトークン)で履歴の commit・Issue の作成・ページの公開を行う。`github-actions[bot]` の既定の権限では push が 403 になる(2026-10-07 の初回で実際に落ちた)。**無いと監視もページの更新も一切動かない。**
+
+1. GitHub の Settings → Developer settings → Fine-grained tokens → Generate new token。
+   - Resource owner:`nowex35`
+   - Repository access:Only select repositories → `sixty-zero-status`
+   - Repository permissions:**Actions・Contents・Issues・Workflows を Read and write**
+   - 期限:切れると全部止まるので、切れる前に作り直す予定を入れておく。
+2. 値を本人の端末で登録する(トークンを画面やチャットに貼らない):`gh secret set GH_PAT --repo nowex35/sixty-zero-status`(入力待ちで貼り付ける)。
+3. Actions → Setup CI → Run workflow で初回を流す。Static Site CI も通ったかを見る。
+
 ## 告知の書き方(運営)
 
 告知は Issue で出す。**ステータスページに出るのは、運営がラベルを付けた Issue だけ。** テンプレートにはラベルを入れていない(誰でも Issue を作れる公開リポジトリなので、テンプレート経由で外部の人が告知を出せないようにしている)。
