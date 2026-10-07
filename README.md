@@ -38,7 +38,7 @@ Upptime のワークフローは、リポジトリの secret **`GH_PAT`**(個人
 1. 「New issue」→「メンテナンスの予告(運営用)」で作る。
 2. 本文の**先頭**の `<!-- -->` の中を書き換える(本文で最初の `<!--` だけが読まれる)。
    - `start` / `end`:開始と終了の日時。`+09:00` を付けて日本時間で書く。
-   - `expectedDown`:この間に止まると分かっている監視の名前(slug)を , 区切りで。今あるのは `site`。`api` は「アプリ・API」を有効にした後に使える。遅くなるだけなら `expectedDegraded`。
+   - `expectedDown`:この間に止まると分かっている監視の名前(slug)を , 区切りで。今あるのは `site` と `api`。遅くなるだけなら `expectedDegraded`。
 3. ラベル `maintenance` を付け、鍵をかける。
 4. `end` を過ぎると Upptime が自動で閉じる。`expectedDown` に書いた監視は、この間に止まっても障害の Issue が作られない。
 
@@ -47,9 +47,9 @@ Upptime のワークフローは、リポジトリの secret **`GH_PAT`**(個人
 | 表示名 | slug | 測る URL | 正常の条件 |
 | --- | --- | --- | --- |
 | サイト(sixty-zero.app) | `site` | `https://sixty-zero.app/.well-known/security.txt` | 200 で本文に `Contact:` がある |
-| アプリ・API(未有効) | `api` | `https://sixty-zero.app/api/health` | 200 で本文に `"backend":"ok"` がある |
+| アプリ・API | `api` | `https://sixty-zero.app/api/health` | 200 で本文に `"backend":"ok"` がある |
 
-「アプリ・API」は `/api/health` が本番に出てから `.upptimerc.yml` のコメントを外して有効にする。
+「アプリ・API」は 2026-10-07 に `/api/health` が本番に出たのを確かめてから有効にした。
 
 ## ライセンス
 

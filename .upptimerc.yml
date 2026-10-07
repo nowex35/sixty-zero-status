@@ -18,17 +18,14 @@ sites:
     # Worker だけで返す本文。これが無ければ 200 でも「停止」にする
     __dangerous__body_down_if_text_missing: "Contact:"
 
-  # 「アプリ・API」は /api/health が本番に出てから有効にする(今は 404 で、入れると「停止」と出続ける)。
-  # 有効にするときは下のコメントを外す。外す前に、本番の応答の本文が
-  # {"status":"ok","backend":"ok"}(空白なし)であることを curl で確かめる。
-  # 失敗時は 503 なので、expectedStatusCodes だけでも「停止」になる。
-  #
-  # - name: アプリ・API
-  #   slug: api
-  #   url: https://sixty-zero.app/api/health
-  #   expectedStatusCodes:
-  #     - 200
-  #   __dangerous__body_down_if_text_missing: '"backend":"ok"'
+  # Worker → バックエンドまで通るか。2026-10-07 に本番へ出たのを確かめてから有効にした(200 {"status":"ok","backend":"ok"}、空白なし)。
+  # 失敗時は 503 なので expectedStatusCodes だけでも「停止」になる。本文の照合は sixty-zero-server の alerts.tf の外形監視と同じ文字列。
+  - name: アプリ・API
+    slug: api
+    url: https://sixty-zero.app/api/health
+    expectedStatusCodes:
+      - 200
+    __dangerous__body_down_if_text_missing: '"backend":"ok"'
 
 assignees:
   - nowex35
