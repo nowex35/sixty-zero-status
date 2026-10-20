@@ -1,7 +1,7 @@
 url: https://sixty-zero.app/api/health
-status: up
-code: 200
-responseTime: 258
-lastUpdated: 2026-10-19T00:57:36.992Z
+status: down
+code: 503
+responseTime: 5124
+lastUpdated: 2026-10-20T00:37:42.507Z
 startTime: 2026-10-07T03:15:26.010Z
 generator: Upptime <https://github.com/upptime/upptime>
