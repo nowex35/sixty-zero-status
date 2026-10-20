@@ -10,11 +10,11 @@
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
-    "time": 316,
-    "timeDay": 211,
-    "timeWeek": 305,
-    "timeMonth": 316,
-    "timeYear": 316,
+    "time": 317,
+    "timeDay": 322,
+    "timeWeek": 308,
+    "timeMonth": 317,
+    "timeYear": 317,
     "dailyMinutesDown": {}
   },
   {
@@ -22,17 +22,19 @@
     "url": "https://sixty-zero.app/api/health",
     "icon": "https://icons.duckduckgo.com/ip3/sixty-zero.app.ico",
     "slug": "api",
-    "status": "down",
-    "uptime": "100.00%",
-    "uptimeDay": "100.00%",
-    "uptimeWeek": "100.00%",
-    "uptimeMonth": "100.00%",
-    "uptimeYear": "100.00%",
-    "time": 802,
-    "timeDay": 2691,
-    "timeWeek": 1054,
-    "timeMonth": 802,
-    "timeYear": 802,
-    "dailyMinutesDown": {}
+    "status": "up",
+    "uptime": "99.67%",
+    "uptimeDay": "95.76%",
+    "uptimeWeek": "99.39%",
+    "uptimeMonth": "99.67%",
+    "uptimeYear": "99.67%",
+    "time": 770,
+    "timeDay": 2726,
+    "timeWeek": 973,
+    "timeMonth": 770,
+    "timeYear": 770,
+    "dailyMinutesDown": {
+      "2026-10-20": 61
+    }
   }
 ]
